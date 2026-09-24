@@ -6,6 +6,8 @@ import { createLogger } from '../core/utils/logger.js';
 import { createHandlers } from '../core/stages/index.js';
 import { parseProductId } from '../core/scrapers/aliexpress/url.js';
 import crypto from 'node:crypto';
+import path from 'node:path';
+import { runTts } from '../core/audio/voice.js';
 import fs from 'node:fs';
 
 // Carga .env (ALIEXPRESS_APP_KEY, etc.) si existe.
@@ -16,7 +18,8 @@ const USAGE = `Uso:
   engine list [status]      Lista productos
   engine show <id>          Muestra el detalle de un producto
   engine retry <id>         Reencola un producto FAILED
-  engine run [--once]       Arranca el daemon (--once: un solo pase)`;
+  engine run [--once]       Arranca el daemon (--once: un solo pase)
+  engine voice-sample [voz] ["texto"]  Genera sample.mp3 para escuchar una voz`;
 
 const config = loadConfig();
 const store = new JsonStore(config.dbFile);
@@ -65,6 +68,15 @@ async function main() {
         await daemon.start();
       }
       await logger.close();
+      break;
+    }
+    case 'voice-sample': {
+      const [voice = config.tts.voice, text = 'Still skipping smoothies because your blender lives on the counter? Meet the mini blender that fits in your bag.'] = args;
+      const outDir = path.resolve('voice-samples');
+      const [clip] = await runTts({ ...config.tts, voice, segments: [{ index: 0, text }], outDir });
+      const file = path.join(outDir, `${voice}.mp3`);
+      fs.renameSync(clip.file, file);
+      console.log(`Escucha: ${file} (${clip.words.length} palabras con tiempos)`);
       break;
     }
     default:

@@ -13,6 +13,19 @@ export function loadConfig(env = process.env) {
     leaseMs: Number(env.ENGINE_LEASE_MS ?? 30 * 60 * 1000),
     maxAttempts: Number(env.ENGINE_MAX_ATTEMPTS ?? 3),
     backoffBaseMs: Number(env.ENGINE_BACKOFF_BASE_MS ?? 30 * 1000),
+    tts: {
+      pythonBin: env.PYTHON_BIN || (process.platform === 'win32' ? 'python' : 'python3'),
+      voice: env.TTS_VOICE || 'en-US-AriaNeural',
+      rate: env.TTS_RATE || '+15%',
+      pitch: env.TTS_PITCH || '+2Hz',
+    },
+    ffmpeg: {
+      ffmpegBin: env.FFMPEG_BIN || 'ffmpeg',
+      ffprobeBin: env.FFPROBE_BIN || 'ffprobe',
+    },
+    subtitles: {
+      font: env.SUBS_FONT || 'Arial Black',
+    },
     gemini: {
       apiKey: env.GEMINI_API_KEY || null,
       model: env.GEMINI_MODEL || 'gemini-2.5-flash',

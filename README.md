@@ -98,9 +98,32 @@ core/stages/script.js         Handler de la etapa "script" -> workspace/<id>/scr
 - `script.json` se reutiliza en reintentos (no gasta cuota). Para regenerar: bórralo. Si lo editas a mano, se revalida.
 - Sin `GEMINI_API_KEY` la etapa queda en pausa (los productos esperan en `PENDING_SCRIPT`).
 
+## Parte 4 — Voz + subtítulos karaoke (✅ lista)
+
+```
+core/audio/tts.py          Python + edge-tts: un clip por segmento, rate +15%, pitch +2Hz, WordBoundary
+core/audio/voice.js        Invoca tts.py (spawn), une clips con FFmpeg y arma la línea de tiempo por palabra
+core/subs/ass.js           Genera captions.ass (1080x1920) estilo karaoke
+core/media/{process,ffmpeg}.js   spawn con timeout/abort, ffmpeg/ffprobe
+core/stages/assets.js      Handler de la etapa "assets" (voz + subtítulos; B-roll llega en la Parte 5)
+```
+
+**Requisitos en tu PC:** Python 3 (`pip install edge-tts`) y FFmpeg en el PATH (o `FFMPEG_BIN` / `FFPROBE_BIN`).
+
+- **Voz femenina** por defecto `en-US-AriaNeural`. Alternativas: `en-US-JennyNeural`, `en-US-AvaNeural`,
+  `en-US-EmmaNeural`. Para escucharlas: `node bin/engine.js voice-sample en-US-JennyNeural`.
+- **Sonido de anuncio:** los clips se unen con 0.12 s de respiro y se masterizan (highpass 80 Hz → compresor →
+  `loudnorm` a -14 LUFS, el volumen estándar de TikTok/Reels).
+- **Sincronía exacta:** las duraciones se miden sobre audio decodificado (WAV), no sobre el MP3, cuyo relleno
+  del encoder desfasaría los subtítulos ~50 ms por segmento.
+- **Subtítulos:** bloques de 1-3 palabras en mayúsculas; la palabra hablada se pinta amarilla (`#FFFF00`) y crece
+  al 115 %; las `subtitle_emphasis_words` del guion crecen al 132 % con animación "pop". Se ubican en el tercio
+  inferior, por encima de la zona de botones de TikTok. Si edge-tts no entrega tiempos por palabra, se estiman.
+- **Salidas:** `audio/voice.mp3`, `audio/voice.json` (tiempos de segmentos y palabras), `subs/captions.ass`.
+  La voz se reutiliza en reintentos; se regenera sola si cambia el texto del guion o la voz.
+
 ## Hoja de ruta
 
-4. **Audio**: `edge-tts` (Python) con timestamps por palabra → subtítulos `.ass` estilo karaoke.
 5. **B-roll**: API de Pexels con fallback recortando la búsqueda.
 6. **Render**: filtergraph de FFmpeg (zoompan, transiciones, ducking, ASS) + detección NVENC.
 7. **Publicación**: APIs oficiales (TikTok Content Posting, YouTube Data, Pinterest).
