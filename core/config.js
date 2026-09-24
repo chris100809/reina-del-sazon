@@ -26,6 +26,9 @@ export function loadConfig(env = process.env) {
     subtitles: {
       font: env.SUBS_FONT || 'Arial Black',
     },
+    pexels: {
+      apiKey: env.PEXELS_API_KEY || null,
+    },
     gemini: {
       apiKey: env.GEMINI_API_KEY || null,
       model: env.GEMINI_MODEL || 'gemini-2.5-flash',

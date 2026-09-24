@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { synthesizeVoice } from '../audio/voice.js';
 import { buildAss } from '../subs/ass.js';
+import { gatherBroll } from '../broll/gather.js';
 
 const VOICE_MANIFEST = 'voice.json';
 const SUBS_FILE = 'captions.ass';
@@ -22,9 +23,9 @@ function voiceFingerprint(script, tts, gap) {
   return crypto.createHash('sha1').update(JSON.stringify({ texts, voice: tts.voice, rate: tts.rate, pitch: tts.pitch, gap })).digest('hex');
 }
 
-// Etapa "assets". Parte 4: voz (edge-tts) + subtítulos karaoke (.ass).
-// Parte 5 agregará aquí la descarga de B-roll.
-export function createAssetsHandler({ tts, ffmpeg, probeDuration, subStyle = {}, gap = 0.12 }) {
+// Etapa "assets": voz (edge-tts) + subtítulos karaoke (.ass) + B-roll (Pexels).
+// `searchBroll` puede ser null (sin API key): los segmentos de B-roll usan imágenes del producto.
+export function createAssetsHandler({ tts, ffmpeg, probeDuration, subStyle = {}, gap = 0.12, searchBroll = null, fetch = globalThis.fetch }) {
   return async ({ product, paths, log, signal }) => {
     const script = await readJson(path.join(paths.base, product.data.scriptFile ?? 'script.json'));
     if (!script) throw new Error('No existe script.json (¿se saltó la etapa script?)');
@@ -47,6 +48,18 @@ export function createAssetsHandler({ tts, ffmpeg, probeDuration, subStyle = {},
     const subsFile = path.join(paths.subs, SUBS_FILE);
     await fs.writeFile(subsFile, buildAss(voice.words, subStyle));
 
+    const broll = await gatherBroll({
+      script,
+      voice,
+      paths,
+      imageCount: product.data.frames?.length ?? 0,
+      search: searchBroll,
+      ffmpeg,
+      fetch,
+      signal,
+      log,
+    });
+
     const rel = (f) => path.relative(paths.base, f);
     return {
       voice: {
@@ -56,6 +69,7 @@ export function createAssetsHandler({ tts, ffmpeg, probeDuration, subStyle = {},
         segments: voice.segments.map(({ index, start, end }) => ({ index, start, end })),
       },
       subtitles: { file: rel(subsFile) },
+      broll: broll.map(({ segment, status, file, queryUsed, productImageIndex, duration }) => ({ segment, status, file, queryUsed, productImageIndex, duration })),
     };
   };
 }

@@ -105,7 +105,7 @@ core/audio/tts.py          Python + edge-tts: un clip por segmento, rate +15%, p
 core/audio/voice.js        Invoca tts.py (spawn), une clips con FFmpeg y arma la línea de tiempo por palabra
 core/subs/ass.js           Genera captions.ass (1080x1920) estilo karaoke
 core/media/{process,ffmpeg}.js   spawn con timeout/abort, ffmpeg/ffprobe
-core/stages/assets.js      Handler de la etapa "assets" (voz + subtítulos; B-roll llega en la Parte 5)
+core/stages/assets.js      Handler de la etapa "assets" (voz + subtítulos + B-roll)
 ```
 
 **Requisitos en tu PC:** Python 3 (`pip install edge-tts`) y FFmpeg en el PATH (o `FFMPEG_BIN` / `FFPROBE_BIN`).
@@ -122,9 +122,28 @@ core/stages/assets.js      Handler de la etapa "assets" (voz + subtítulos; B-ro
 - **Salidas:** `audio/voice.mp3`, `audio/voice.json` (tiempos de segmentos y palabras), `subs/captions.ass`.
   La voz se reutiliza en reintentos; se regenera sola si cambia el texto del guion o la voz.
 
+## Parte 5 — B-roll desde Pexels (✅ lista)
+
+```
+core/broll/queries.js    Cadena de búsquedas: completa -> sin stopwords -> recortando la última palabra -> genéricas
+core/broll/pexels.js     API de Pexels (orientation=portrait, size=medium) + elección de clip/archivo
+core/broll/gather.js     Un clip por segmento "b-roll_video", con respaldo a imagen del producto
+core/broll/prepare.js    FFmpeg: 1080x1920, 30 fps, sin audio, duración exacta (loop si hace falta)
+core/media/download.js   Descarga en streaming con límite de tamaño y escritura atómica
+```
+
+- **Duración exacta:** cada clip dura lo que su segmento en la voz (Parte 4) + 0.5 s de margen para transiciones.
+- **Elección:** vertical, sin repetir clip dentro del mismo video, el primero que alcance la duración; archivo más
+  liviano con alto ≥ 1280 (evita 4K). Si ninguno alcanza, se usa el más largo en loop.
+- **Nunca un bloque negro:** `"shocked person looking at phone"` → `"shocked person looking phone"` →
+  `"shocked person looking"` → … → `"shocked"`. Si nada funciona (o no hay `PEXELS_API_KEY`), el segmento usa
+  una imagen del producto.
+- **Reanudable:** `b_roll/manifest.json` guarda cada segmento resuelto (con autor y link de Pexels para créditos).
+  Un reintento (p. ej. tras un 429 de cuota) continúa donde quedó; si cambia la búsqueda del guion, se rehace.
+- Una API key inválida marca el producto como `FAILED` (no tiene sentido reintentar); los 429/5xx se reintentan.
+
 ## Hoja de ruta
 
-5. **B-roll**: API de Pexels con fallback recortando la búsqueda.
 6. **Render**: filtergraph de FFmpeg (zoompan, transiciones, ducking, ASS) + detección NVENC.
 7. **Publicación**: APIs oficiales (TikTok Content Posting, YouTube Data, Pinterest).
 8. **TUI**: panel en terminal alimentado por `logger.events`.
