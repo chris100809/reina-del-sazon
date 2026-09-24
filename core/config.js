@@ -29,6 +29,12 @@ export function loadConfig(env = process.env) {
     pexels: {
       apiKey: env.PEXELS_API_KEY || null,
     },
+    render: {
+      encoder: env.RENDER_ENCODER || 'auto', // auto | nvenc | x264
+      musicDir: path.resolve(root, env.ENGINE_MUSIC_DIR ?? 'assets/music'),
+      sfxDir: path.resolve(root, env.ENGINE_SFX_DIR ?? 'assets/sfx'),
+      musicVolume: Number(env.MUSIC_VOLUME ?? 0.18),
+    },
     gemini: {
       apiKey: env.GEMINI_API_KEY || null,
       model: env.GEMINI_MODEL || 'gemini-2.5-flash',

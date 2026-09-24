@@ -4,6 +4,8 @@ import { createAssetsHandler } from './assets.js';
 import { createGeminiClient } from '../agents/gemini.js';
 import { createFfmpeg } from '../media/ffmpeg.js';
 import { searchPexelsVideos } from '../broll/pexels.js';
+import { createRenderHandler } from './render.js';
+import { detectEncoder } from '../render/encoder.js';
 
 // Construye los handlers según la configuración. Una etapa sin handler queda en pausa
 // (sus productos esperan) y se avisa en `warnings`.
@@ -26,5 +28,15 @@ export function createHandlers(config) {
     warnings.push('Sin PEXELS_API_KEY: los segmentos de B-roll usarán imágenes del producto');
   }
   handlers.assets = createAssetsHandler({ tts: config.tts, ffmpeg, probeDuration, subStyle: config.subtitles, searchBroll });
+
+  let encoderPromise = null; // se detecta una vez, en el primer render
+  handlers.render = createRenderHandler({
+    ffmpeg,
+    probeDuration,
+    getEncoder: () => (encoderPromise ??= detectEncoder({ ffmpegBin: config.ffmpeg.ffmpegBin, preference: config.render.encoder })),
+    musicDir: config.render.musicDir,
+    sfxDir: config.render.sfxDir,
+    musicVolume: config.render.musicVolume,
+  });
   return { handlers, warnings };
 }

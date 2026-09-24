@@ -6,7 +6,7 @@ export const DEFAULT_SUB_STYLE = Object.freeze({
   width: 1080,
   height: 1920,
   font: 'Arial Black',
-  fontSize: 92,
+  fontSize: 80,
   primary: '#FFFFFF',
   highlight: '#FFFF00',
   outline: '#000000',
@@ -16,7 +16,7 @@ export const DEFAULT_SUB_STYLE = Object.freeze({
   activeScale: 115,
   emphasisScale: 132,
   maxWordsPerChunk: 3,
-  maxCharsPerChunk: 20,
+  maxCharsPerChunk: 16,
   pauseBreak: 0.3, // una pausa mayor a esto empieza bloque nuevo
   holdMax: 0.45, // cuánto puede quedarse un bloque en pantalla durante un silencio
   uppercase: true,
@@ -93,7 +93,7 @@ export function buildAss(words, overrides = {}) {
     'ScriptType: v4.00+',
     `PlayResX: ${st.width}`,
     `PlayResY: ${st.height}`,
-    'WrapStyle: 2',
+    'WrapStyle: 0', // si aun así no cabe, libass parte la línea en vez de cortarla
     'ScaledBorderAndShadow: yes',
     'YCbCr Matrix: TV.709',
     '',

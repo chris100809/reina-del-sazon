@@ -142,8 +142,40 @@ core/media/download.js   Descarga en streaming con límite de tamaño y escritur
   Un reintento (p. ej. tras un 429 de cuota) continúa donde quedó; si cambia la búsqueda del guion, se rehace.
 - Una API key inválida marca el producto como `FAILED` (no tiene sentido reintentar); los 429/5xx se reintentan.
 
+## Parte 6 — Render con FFmpeg (✅ lista)
+
+```
+core/render/plan.js       Línea de tiempo visual sincronizada con la voz (inicio, duración y transición por segmento)
+core/render/effects.js    zoom_effect -> zoompan, transition_in -> xfade, efecto glitch
+core/render/commands.js   Argumentos de FFmpeg: pasada 1 (clip por segmento) y pasada 2 (composición)
+core/render/encoder.js    Detección real de NVENC + perfiles de codificación
+core/render/sfx.js        assets/sfx/ (tuyos) o sintetizados si faltan
+core/render/music.js      Elección de pista en assets/music/
+core/stages/render.js     Handler de la etapa "render" -> output/final.mp4 + output/cover.jpg
+```
+
+**Pasada 1 — un clip por segmento** (en paralelo): la imagen o el B-roll se sobre-escala 2x y pasa por
+`zoompan` con `d=1` (Ken Burns centrado `x=iw/2-(iw/zoom/2)`, zoom out o paneo), 30 fps, frames exactos.
+Zoom de 20 % en `fast_paced`, 10 % en `cinematic_slow`.
+
+**Pasada 2 — composición:**
+- **Transiciones `xfade`** que *terminan* justo cuando empieza cada frase: `cut` (1 frame), `fade`, `slide_up`,
+  `zoom_blur` (zoomin) y `glitch` (pixelize + separación RGB + ruido).
+- **Subtítulos** `captions.ass` quemados con libass (se ejecuta con `cwd` en `subs/` para evitar el escape de
+  rutas de Windows dentro del filtergraph).
+- **Audio:** voz + música en loop con fade in/out + ducking `sidechaincompress=threshold=0.06:ratio=4:attack=5:release=100`.
+  Los segmentos con `music_ducking: false` no bajan la música. SFX en el inicio de cada transición; el `riser`
+  termina justo cuando entra su segmento. `alimiter` final (sin clipping); resultado ≈ -14 LUFS.
+- **Codificación:** `h264_nvenc -preset p6 -tune hq -b:v 8M` si hay NVIDIA, si no `libx264 -crf 19`. La detección
+  hace una codificación de prueba (FFmpeg lista `h264_nvenc` aunque no haya GPU). Forzar con `RENDER_ENCODER`.
+
+**Carpetas:** `assets/music/` (tus pistas libres de derechos; una por producto, siempre la misma para el mismo
+producto) y `assets/sfx/` (`whoosh`, `impact`, `pop`, `ding`, `riser`; los que falten se sintetizan).
+
+**Reutilización:** `output/render.json` guarda una huella de todos los insumos; si nada cambió no se re-renderiza.
+Referencia en CPU de 4 núcleos sin GPU: ~55 s para un video de 28 s.
+
 ## Hoja de ruta
 
-6. **Render**: filtergraph de FFmpeg (zoompan, transiciones, ducking, ASS) + detección NVENC.
 7. **Publicación**: APIs oficiales (TikTok Content Posting, YouTube Data, Pinterest).
 8. **TUI**: panel en terminal alimentado por `logger.events`.
