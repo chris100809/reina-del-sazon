@@ -1,0 +1,61 @@
+{
+  "strategy": {
+    "target_customer": "Busy gym-goers and commuters who want fresh smoothies anywhere.",
+    "core_problem": "Bulky blenders stay at home, so healthy drinks get skipped.",
+    "key_benefit": "A cordless USB-rechargeable blender that fits in a bag.",
+    "hook_rationale": "Calls out a daily frustration, then teases a pocket-size fix."
+  },
+  "marketing_angle": "pain-point",
+  "video_pacing": "fast_paced",
+  "a_b_testing_hooks": [
+    "Still skipping smoothies because your blender lives on the counter?",
+    "This thing fits in my gym bag and makes smoothies anywhere."
+  ],
+  "timeline_events": [
+    {
+      "segment_index": 0,
+      "tts_text": "Still skipping smoothies because your blender lives on the counter?",
+      "visual_directive": { "asset_type": "b-roll_video", "search_query": "Tired Person Kitchen Morning", "transition_in": "cut", "zoom_effect": "zoom_in_center" },
+      "audio_directive": { "sound_effect": "whoosh", "music_ducking": true },
+      "subtitle_emphasis_words": ["skipping", "smoothies"]
+    },
+    {
+      "segment_index": 5,
+      "tts_text": "Mornings are rushed, the gym is packed, and cleaning a giant blender is the last thing you want to do.",
+      "visual_directive": { "asset_type": "b-roll_video", "search_query": "busy morning commute", "transition_in": "glitch", "zoom_effect": "pan_left" },
+      "audio_directive": { "sound_effect": "none", "music_ducking": true },
+      "subtitle_emphasis_words": ["rushed", "giant", "NotInText"]
+    },
+    {
+      "segment_index": 2,
+      "tts_text": "Meet this mini portable blender. It is cordless and charges with a simple USB cable.",
+      "visual_directive": { "asset_type": "product_image", "product_image_index": 0, "transition_in": "zoom_blur", "zoom_effect": "zoom_in_center" },
+      "audio_directive": { "sound_effect": "impact", "music_ducking": true },
+      "subtitle_emphasis_words": ["cordless", "USB"]
+    },
+    {
+      "segment_index": 3,
+      "tts_text": "Toss in fruit, milk or protein, press one button, and your drink is ready in seconds.",
+      "visual_directive": { "asset_type": "product_image", "product_image_index": 7, "transition_in": "slide_up", "zoom_effect": "zoom_out" },
+      "audio_directive": { "sound_effect": "pop", "music_ducking": true },
+      "subtitle_emphasis_words": ["one", "button"]
+    },
+    {
+      "segment_index": 4,
+      "tts_text": "It fits in your bag, so fresh smoothies come with you to work, the gym, or road trips.",
+      "visual_directive": { "asset_type": "product_image", "transition_in": "fade", "zoom_effect": "pan_right" },
+      "audio_directive": { "sound_effect": "ding", "music_ducking": true },
+      "subtitle_emphasis_words": ["bag"]
+    },
+    {
+      "segment_index": 5,
+      "tts_text": "Tap the link and grab yours today.",
+      "visual_directive": { "asset_type": "product_image", "product_image_index": 1, "transition_in": "cut", "zoom_effect": "zoom_in_center" },
+      "audio_directive": { "sound_effect": "riser", "music_ducking": false },
+      "subtitle_emphasis_words": ["link"]
+    }
+  ],
+  "cta": "Tap the link and grab yours today.",
+  "caption": "Smoothies anywhere, no outlet needed.",
+  "hashtags": ["#TikTokMadeMeBuyIt", "smoothie", "gym life", "kitchengadgets", "smoothie", "bad tag!"]
+}

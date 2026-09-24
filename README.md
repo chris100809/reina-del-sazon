@@ -75,9 +75,31 @@ node bin/engine.js add "https://www.aliexpress.com/item/1005006123456789.html"  
 node bin/engine.js run --once
 ```
 
+## Parte 3 — Guion con Gemini (✅ lista)
+
+```
+core/agents/gemini.js         Cliente REST de Gemini (sin SDK); 400/401/403/404 = permanente, 429/5xx = reintento
+core/agents/scriptSchema.js   Esquema JSON (responseSchema) + validador/normalizador
+core/agents/json.js           Extracción tolerante: JSON puro, bloque ```json, o /{[\s\S]*}/
+core/agents/scriptwriter.js   Prompt de sistema, parámetros (temp 0.85, topP 0.9, topK 40) y bucle de 3 intentos
+core/stages/script.js         Handler de la etapa "script" -> workspace/<id>/script.json
+```
+
+- **JSON indestructible en 3 capas:** (1) Gemini con `responseMimeType: application/json` + `responseSchema`,
+  (2) extracción tolerante si aun así viene texto extra, (3) validador propio. Si el guion no cumple, los
+  errores exactos se le devuelven a Gemini en el siguiente intento (máx. 3). Si los 3 fallan, el daemon
+  reintenta más tarde con backoff.
+- **Cadena de pensamiento estructurada:** el primer campo es `strategy` (cliente, problema, beneficio, por qué
+  funciona el hook); el modelo razona ahí antes de escribir el guion, sin romper el JSON.
+- **Normalización automática:** reindexa segmentos, ajusta `product_image_index` al número real de frames, quita
+  palabras de énfasis que no se pronuncian, limpia hashtags. Segmento 0 = hook A (para la variante B del render).
+- **Cumplimiento publicitario:** el prompt prohíbe inventar especificaciones, reseñas o estadísticas, urgencia
+  falsa y claims médicos (FTC / políticas de TikTok). Solo usa los datos del proveedor.
+- `script.json` se reutiliza en reintentos (no gasta cuota). Para regenerar: bórralo. Si lo editas a mano, se revalida.
+- Sin `GEMINI_API_KEY` la etapa queda en pausa (los productos esperan en `PENDING_SCRIPT`).
+
 ## Hoja de ruta
 
-3. **Script**: Gemini con salida JSON por esquema + validación + 3 reintentos.
 4. **Audio**: `edge-tts` (Python) con timestamps por palabra → subtítulos `.ass` estilo karaoke.
 5. **B-roll**: API de Pexels con fallback recortando la búsqueda.
 6. **Render**: filtergraph de FFmpeg (zoompan, transiciones, ducking, ASS) + detección NVENC.

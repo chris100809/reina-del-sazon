@@ -3,7 +3,7 @@ import { loadConfig } from '../core/config.js';
 import { JsonStore } from '../core/state/jsonStore.js';
 import { Daemon } from '../core/queue/daemon.js';
 import { createLogger } from '../core/utils/logger.js';
-import { handlers } from '../core/stages/index.js';
+import { createHandlers } from '../core/stages/index.js';
 import { parseProductId } from '../core/scrapers/aliexpress/url.js';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
@@ -53,6 +53,8 @@ async function main() {
     }
     case 'run': {
       const logger = createLogger({ logsDir: config.logsDir });
+      const { handlers, warnings } = createHandlers(config);
+      warnings.forEach((w) => logger.warn(w));
       const daemon = new Daemon({ store, handlers, config, logger });
       process.on('SIGINT', () => daemon.stop());
       process.on('SIGTERM', () => daemon.stop());
