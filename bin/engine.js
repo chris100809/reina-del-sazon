@@ -4,9 +4,15 @@ import { JsonStore } from '../core/state/jsonStore.js';
 import { Daemon } from '../core/queue/daemon.js';
 import { createLogger } from '../core/utils/logger.js';
 import { handlers } from '../core/stages/index.js';
+import { parseProductId } from '../core/scrapers/aliexpress/url.js';
+import crypto from 'node:crypto';
+import fs from 'node:fs';
+
+// Carga .env (ALIEXPRESS_APP_KEY, etc.) si existe.
+if (fs.existsSync('.env')) process.loadEnvFile('.env');
 
 const USAGE = `Uso:
-  engine add <id> <url>     Encola un producto (estado PENDING_SCRAPE)
+  engine add <url> [id]     Encola un link de AliExpress (ID automático: ali_<productId>)
   engine list [status]      Lista productos
   engine show <id>          Muestra el detalle de un producto
   engine retry <id>         Reencola un producto FAILED
@@ -19,8 +25,10 @@ const [cmd, ...args] = process.argv.slice(2);
 async function main() {
   switch (cmd) {
     case 'add': {
-      const [id, url] = args;
-      if (!id || !url) throw new Error(USAGE);
+      const [url, customId] = args;
+      if (!url) throw new Error(USAGE);
+      const aliId = parseProductId(url);
+      const id = customId ?? (aliId ? `ali_${aliId}` : `ali_${crypto.createHash('sha1').update(url).digest('hex').slice(0, 10)}`);
       const p = await store.create({ id, sourceUrl: url });
       console.log(`Encolado ${p.id} -> ${p.status}`);
       break;

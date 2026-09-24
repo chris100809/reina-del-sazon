@@ -13,5 +13,10 @@ export function loadConfig(env = process.env) {
     leaseMs: Number(env.ENGINE_LEASE_MS ?? 30 * 60 * 1000),
     maxAttempts: Number(env.ENGINE_MAX_ATTEMPTS ?? 3),
     backoffBaseMs: Number(env.ENGINE_BACKOFF_BASE_MS ?? 30 * 1000),
+    aliexpress: {
+      appKey: env.ALIEXPRESS_APP_KEY || null,
+      appSecret: env.ALIEXPRESS_APP_SECRET || null,
+      trackingId: env.ALIEXPRESS_TRACKING_ID || null,
+    },
   };
 }
