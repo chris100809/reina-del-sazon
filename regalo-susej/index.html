@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Nuestro Universo</title>
+  <meta name="description" content="Un regalo de cumpleaños para Susej, con todo el amor de Christopher.">
+  <meta name="theme-color" content="#1a0710">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23f6b8cf' d='M12 21s-7.5-4.6-10-9.3C.3 8.4 2.2 4 6.3 4c2.3 0 3.9 1.3 5.7 3.3C13.8 5.3 15.4 4 17.7 4 21.8 4 23.7 8.4 22 11.7 19.5 16.4 12 21 12 21z'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Poppins:wght@300;400;500;600&family=Special+Elite&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Portada: sobre que se abre (también activa la música) -->
+  <div id="gate" class="gate" role="dialog" aria-label="Abrir regalo">
+    <div class="gate-stars" aria-hidden="true"></div>
+    <button id="gate-btn" class="envelope" type="button" aria-label="Abrir tu regalo">
+      <span class="env-back"></span>
+      <span class="env-letter">
+        <span class="script">Para</span>
+        <span class="env-name">mi pucheritos</span>
+      </span>
+      <span class="env-front"></span>
+      <span class="env-flap"></span>
+      <span class="env-seal" aria-hidden="true">♥</span>
+    </button>
+    <p class="gate-hint">Toca el sobre para abrir tu regalo</p>
+    <p class="gate-sub">Sube el volumen 🎶</p>
+  </div>
+
+  <nav class="topnav" aria-label="Secciones">
+    <a href="#inicio">Inicio</a>
+    <a href="#ella">Tú</a>
+    <a href="#historia">Historia</a>
+    <a href="#momentos">Momentos</a>
+    <a href="#universo">Carta</a>
+    <a href="#suenos">Sueños</a>
+    <a href="#capsulas">Cápsulas</a>
+    <a href="#quiz">Quiz</a>
+    <a href="#cielo">Cielo</a>
+  </nav>
+
+  <main>
+    <!-- 1. HERO -->
+    <section id="inicio" class="hero">
+      <canvas id="hero-sky" class="hero-sky" aria-hidden="true"></canvas>
+      <div class="hero-hearts" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <p class="eyebrow" id="hero-eyebrow">Feliz cumpleaños, mi pucheritos</p>
+        <h1 class="hero-title">
+          <span>Christopher</span>
+          <span class="amp">&amp;</span>
+          <span>Susej</span>
+        </h1>
+        <p class="hero-sub">Juntos desde el <strong>14 de febrero de 2025</strong>, el día que me dijiste que sí en la cascada.</p>
+
+        <div class="counter" id="counter" aria-live="off">
+          <div class="unit"><span class="num" data-k="y">0</span><span class="lbl">Años</span></div>
+          <div class="unit"><span class="num" data-k="mo">0</span><span class="lbl">Meses</span></div>
+          <div class="unit"><span class="num" data-k="d">0</span><span class="lbl">Días</span></div>
+          <div class="unit"><span class="num" data-k="h">0</span><span class="lbl">Horas</span></div>
+          <div class="unit"><span class="num" data-k="mi">0</span><span class="lbl">Minutos</span></div>
+          <div class="unit"><span class="num" data-k="s">0</span><span class="lbl">Segundos</span></div>
+        </div>
+        <p class="hero-since" id="hero-since"></p>
+
+        <div class="bday" id="bday"></div>
+      </div>
+      <a href="#ella" class="scroll-cue" aria-label="Seguir bajando"><span></span></a>
+    </section>
+
+    <!-- 2. SOBRE ELLA -->
+    <section id="ella" class="section">
+      <header class="sec-head reveal">
+        <p class="kicker">Mi persona favorita</p>
+        <h2>Todo sobre ti</h2>
+      </header>
+      <div class="ella-grid">
+        <figure class="ella-photo reveal">
+          <img src="assets/fotos/foto-26.jpg" alt="Primer plano de los ojos color hazel de Susej" loading="lazy">
+          <figcaption>Esos ojos hazel…</figcaption>
+        </figure>
+        <div class="ella-text reveal">
+          <p id="ella-intro" class="lead"></p>
+          <blockquote id="ella-cita" class="quote"></blockquote>
+        </div>
+      </div>
+      <div class="rasgos" id="rasgos"></div>
+    </section>
+
+    <!-- 2b. RAZONES -->
+    <section id="razones" class="section section-tint">
+      <header class="sec-head reveal">
+        <p class="kicker">Infinitas, pero aquí van algunas</p>
+        <h2>Razones por las que te amo</h2>
+      </header>
+      <div class="reason-card reveal">
+        <span class="reason-num" id="reason-num">Razón #1</span>
+        <p class="reason-text" id="reason-text">Toca el botón y descubre una.</p>
+        <button class="btn btn-primary" id="reason-btn" type="button">
+          <span class="ic" data-icon="heart"></span> Dame otra razón por la que te amo
+        </button>
+      </div>
+    </section>
+
+    <!-- 3. TIMELINE -->
+    <section id="historia" class="section">
+      <header class="sec-head reveal">
+        <p class="kicker">Capítulo a capítulo</p>
+        <h2>Nuestra historia</h2>
+      </header>
+      <ol class="timeline" id="timeline"></ol>
+    </section>
+
+    <!-- 4. GALERÍA -->
+    <section id="momentos" class="section section-tint">
+      <header class="sec-head reveal">
+        <p class="kicker">Toca las tarjetas para voltearlas</p>
+        <h2>Nuestros momentos lindos</h2>
+      </header>
+      <div class="flips" id="flips"></div>
+      <div class="polaroids" id="polaroids"></div>
+      <div class="center">
+        <button class="btn btn-ghost" id="more-btn" type="button">Ver más momentos</button>
+      </div>
+    </section>
+
+    <!-- 5. CARTA -->
+    <section id="universo" class="section">
+      <header class="sec-head reveal">
+        <p class="kicker">Léela despacio</p>
+        <h2>Nuestro universo</h2>
+      </header>
+      <article class="letter reveal" id="letter">
+        <div class="letter-body" id="letter-body" aria-live="polite"></div>
+        <button class="letter-skip" id="letter-skip" type="button">Mostrar toda la carta</button>
+      </article>
+    </section>
+
+    <!-- 6. METAS -->
+    <section id="suenos" class="section section-tint">
+      <header class="sec-head reveal">
+        <p class="kicker">Lo que nos falta por vivir</p>
+        <h2>Nuestras metas y sueños</h2>
+      </header>
+      <div class="bucket reveal">
+        <div class="progress-wrap">
+          <div class="progress-label"><span id="bucket-count"></span><span id="bucket-pct"></span></div>
+          <div class="progress"><div class="progress-bar" id="bucket-bar"></div></div>
+        </div>
+        <ul class="bucket-list" id="bucket-list"></ul>
+      </div>
+    </section>
+
+    <!-- 7. CÁPSULAS -->
+    <section id="capsulas" class="section">
+      <header class="sec-head reveal">
+        <p class="kicker">Mensajes guardados para el momento justo</p>
+        <h2>Cápsulas del tiempo</h2>
+      </header>
+      <div class="capsules" id="capsules"></div>
+    </section>
+
+    <!-- 8. QUIZ -->
+    <section id="quiz" class="section section-tint">
+      <header class="sec-head reveal">
+        <p class="kicker">A ver, a ver…</p>
+        <h2>¿Cuánto nos conocemos?</h2>
+      </header>
+      <div class="quiz-card reveal" id="quiz-card"></div>
+    </section>
+
+    <!-- 9. CIELO -->
+    <section id="cielo" class="section sky-section">
+      <header class="sec-head reveal">
+        <p class="kicker" id="sky-kicker">El cielo de esa noche</p>
+        <h2>Nuestras estrellas</h2>
+      </header>
+      <div class="starmap-wrap reveal">
+        <canvas id="starmap" class="starmap" aria-label="Mapa del cielo estrellado sobre Venezuela la noche del 14 de febrero de 2025"></canvas>
+        <p class="starmap-cap" id="starmap-cap"></p>
+      </div>
+      <footer class="closing">
+        <p class="closing-phrase script" id="closing-phrase"></p>
+        <p class="closing-sign">Con todo mi amor, Christopher · para Susej</p>
+        <p class="closing-heart" aria-hidden="true">♥</p>
+      </footer>
+    </section>
+  </main>
+
+  <!-- Reproductor flotante -->
+  <div class="player" id="player" aria-label="Reproductor de música">
+    <button class="player-btn" id="player-btn" type="button" aria-label="Reproducir canción">
+      <span class="ic" data-icon="play"></span>
+    </button>
+    <div class="player-info">
+      <span class="player-title" id="player-title"></span>
+      <span class="player-artist" id="player-artist"></span>
+    </div>
+    <div class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  </div>
+  <div id="yt-holder" class="yt-holder" aria-hidden="true"><div id="yt-player"></div></div>
+  <audio id="audio" preload="none" loop></audio>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Foto ampliada" hidden>
+    <button class="lb-close" id="lb-close" type="button" aria-label="Cerrar"><span class="ic" data-icon="x"></span></button>
+    <button class="lb-nav lb-prev" id="lb-prev" type="button" aria-label="Anterior"><span class="ic" data-icon="left"></span></button>
+    <figure class="lb-figure">
+      <div class="lb-media" id="lb-media"></div>
+      <figcaption class="lb-cap" id="lb-cap"></figcaption>
+    </figure>
+    <button class="lb-nav lb-next" id="lb-next" type="button" aria-label="Siguiente"><span class="ic" data-icon="right"></span></button>
+  </div>
+
+  <!-- Modal de cápsula -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" hidden>
+    <div class="modal-card">
+      <button class="modal-close" id="modal-close" type="button" aria-label="Cerrar"><span class="ic" data-icon="x"></span></button>
+      <h3 id="modal-title"></h3>
+      <p id="modal-text"></p>
+    </div>
+  </div>
+
+  <canvas id="fx" class="fx" aria-hidden="true"></canvas>
+
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
