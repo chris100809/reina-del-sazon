@@ -2,14 +2,12 @@
 module.exports = {
   darkMode: 'class',
   content: [
-    './apps/web/src/**/*.{js,ts,jsx,tsx,mdx}',
-    './apps/desktop/src/**/*.{js,ts,jsx,tsx,mdx}',
-    './packages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
+    '../../packages/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
       colors: {
-        // Studio Dark Theme - Blender/UE5/Figma inspired
         studio: {
           bg: '#0D0E12',
           bgElevated: '#131419',
@@ -21,7 +19,6 @@ module.exports = {
           text: '#E8EAF0',
           textMuted: '#6B7280',
           textInverse: '#0D0E12',
-          // Neon accents
           cyan: '#00F0FF',
           cyanGlow: '#00F0FF40',
           magenta: '#FF007A',
@@ -30,13 +27,11 @@ module.exports = {
           amberGlow: '#FFB80040',
           emerald: '#00FF88',
           emeraldGlow: '#00FF8840',
-          // Status
           success: '#00FF88',
           warning: '#FFB800',
           error: '#FF3366',
           info: '#00F0FF',
         },
-        // Semantic aliases
         background: 'var(--studio-bg)',
         foreground: 'var(--studio-text)',
         primary: {

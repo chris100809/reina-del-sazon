@@ -6,7 +6,6 @@ import { Cube, Camera, Lightbulb, Settings, Sliders, Layers, Trash2, Copy, Eye, 
 import { cn } from '@/lib/utils';
 import { useStudioStore } from '@/hooks/useStudioStore';
 import { useViewportStore } from '@/hooks/useViewportStore';
-import { PropertyEditor } from './PropertyEditor';
 
 export function PropertiesPanel() {
   const { scene, activeObjectId, updateObject, removeObject, duplicateObject } = useStudioStore();

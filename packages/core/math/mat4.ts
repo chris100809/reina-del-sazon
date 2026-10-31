@@ -340,7 +340,7 @@ export function lookAt(out: Mat4, eye: Vec3, center: Vec3, up: Vec3): Mat4 {
     return identity(out);
   }
   z0 = eyex - centerx; z1 = eyey - centery; z2 = eyez - centerz;
-  const len = 1 / Math.hypot(z0, z1, z2);
+  let len = 1 / Math.hypot(z0, z1, z2);
   z0 *= len; z1 *= len; z2 *= len;
   x0 = upy * z2 - upz * z1;
   x1 = upz * z0 - upx * z2;
@@ -384,33 +384,33 @@ export function getScaling(out: Vec3, m: Mat4): Vec3 {
 
 export function getRotation(out: Quat, m: Mat4): Quat {
   const e = m.elements;
-  const sx = 1 / Math.hypot(e[0], e[1], e[2]);
-  const sy = 1 / Math.hypot(e[4], e[5], e[6]);
-  const sz = 1 / Math.hypot(e[8], e[9], e[10]);
+  let sx = 1 / Math.hypot(e[0], e[1], e[2]);
+  let sy = 1 / Math.hypot(e[4], e[5], e[6]);
+  let sz = 1 / Math.hypot(e[8], e[9], e[10]);
   const m11 = e[0] * sx, m12 = e[1] * sx, m13 = e[2] * sx;
   const m21 = e[4] * sy, m22 = e[5] * sy, m23 = e[6] * sy;
   const m31 = e[8] * sz, m32 = e[9] * sz, m33 = e[10] * sz;
   const trace = m11 + m22 + m33;
   if (trace > 0) {
-    const s = Math.sqrt(trace + 1) * 2;
+    let s = Math.sqrt(trace + 1) * 2;
     out.w = 0.25 * s;
     out.x = (m32 - m23) / s;
     out.y = (m13 - m31) / s;
     out.z = (m21 - m12) / s;
   } else if (m11 > m22 && m11 > m33) {
-    const s = Math.sqrt(1 + m11 - m22 - m33) * 2;
+    let s = Math.sqrt(1 + m11 - m22 - m33) * 2;
     out.w = (m32 - m23) / s;
     out.x = 0.25 * s;
     out.y = (m12 + m21) / s;
     out.z = (m13 + m31) / s;
   } else if (m22 > m33) {
-    const s = Math.sqrt(1 + m22 - m11 - m33) * 2;
+    let s = Math.sqrt(1 + m22 - m11 - m33) * 2;
     out.w = (m13 - m31) / s;
     out.x = (m12 + m21) / s;
     out.y = 0.25 * s;
     out.z = (m23 + m32) / s;
   } else {
-    const s = Math.sqrt(1 + m33 - m11 - m22) * 2;
+    let s = Math.sqrt(1 + m33 - m11 - m22) * 2;
     out.w = (m21 - m12) / s;
     out.x = (m13 + m31) / s;
     out.y = (m23 + m32) / s;
@@ -436,9 +436,9 @@ export function compose(out: Mat4, position: Vec3, rotation: Quat, scale: Vec3):
 
 export function decompose(m: Mat4, position: Vec3, rotation: Quat, scale: Vec3): boolean {
   const e = m.elements;
-  const sx = Math.hypot(e[0], e[1], e[2]);
-  const sy = Math.hypot(e[4], e[5], e[6]);
-  const sz = Math.hypot(e[8], e[9], e[10]);
+  let sx = Math.hypot(e[0], e[1], e[2]);
+  let sy = Math.hypot(e[4], e[5], e[6]);
+  let sz = Math.hypot(e[8], e[9], e[10]);
   const det = e[0] * (e[5] * e[10] - e[6] * e[9]) - e[1] * (e[4] * e[10] - e[6] * e[8]) + e[2] * (e[4] * e[9] - e[5] * e[8]);
   if (det < 0) sx = -sx;
   position.x = e[12]; position.y = e[13]; position.z = e[14];
@@ -448,25 +448,25 @@ export function decompose(m: Mat4, position: Vec3, rotation: Quat, scale: Vec3):
   const m31 = e[8] * invSZ, m32 = e[9] * invSZ, m33 = e[10] * invSZ;
   const trace = m11 + m22 + m33;
   if (trace > 0) {
-    const s = Math.sqrt(trace + 1) * 2;
+    let s = Math.sqrt(trace + 1) * 2;
     rotation.w = 0.25 * s;
     rotation.x = (m32 - m23) / s;
     rotation.y = (m13 - m31) / s;
     rotation.z = (m21 - m12) / s;
   } else if (m11 > m22 && m11 > m33) {
-    const s = Math.sqrt(1 + m11 - m22 - m33) * 2;
+    let s = Math.sqrt(1 + m11 - m22 - m33) * 2;
     rotation.w = (m32 - m23) / s;
     rotation.x = 0.25 * s;
     rotation.y = (m12 + m21) / s;
     rotation.z = (m13 + m31) / s;
   } else if (m22 > m33) {
-    const s = Math.sqrt(1 + m22 - m11 - m33) * 2;
+    let s = Math.sqrt(1 + m22 - m11 - m33) * 2;
     rotation.w = (m13 - m31) / s;
     rotation.x = (m12 + m21) / s;
     rotation.y = 0.25 * s;
     rotation.z = (m23 + m32) / s;
   } else {
-    const s = Math.sqrt(1 + m33 - m11 - m22) * 2;
+    let s = Math.sqrt(1 + m33 - m11 - m22) * 2;
     rotation.w = (m21 - m12) / s;
     rotation.x = (m13 + m31) / s;
     rotation.y = (m23 + m32) / s;

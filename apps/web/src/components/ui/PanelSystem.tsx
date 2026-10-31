@@ -1,8 +1,62 @@
 'use client';
 
 import { forwardRef, useImperativeHandle, useState, useCallback, useRef, useEffect } from 'react';
-import { ResizeHandle } from '@radix-ui/react-resizable';
 import { cn } from '@/lib/utils';
+
+// Simple custom resize handle implementation
+interface ResizeHandleProps {
+  className?: string;
+  onDrag: (size: number) => void;
+  hitAreaMargins?: number;
+  direction?: 'horizontal' | 'vertical';
+}
+
+function ResizeHandle({ className, onDrag, hitAreaMargins = 4, direction = 'horizontal' }: ResizeHandleProps) {
+  const [isDragging, setIsDragging] = useState(false);
+  const startX = useRef(0);
+  const startY = useRef(0);
+  const startSize = useRef(0);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    startX.current = e.clientX;
+    startY.current = e.clientY;
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+    e.preventDefault();
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!isDragging) return;
+    const delta = direction === 'horizontal' ? e.clientX - startX.current : e.clientY - startY.current;
+    onDrag(startSize.current + delta);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    document.removeEventListener('mousemove', handleMouseMove);
+    document.removeEventListener('mouseup', handleMouseUp);
+  };
+
+  return (
+    <div
+      className={cn(
+        'relative z-10 flex items-center justify-center select-none',
+        direction === 'horizontal' ? 'w-1 cursor-col-resize' : 'h-1 cursor-row-resize',
+        className
+      )}
+      onMouseDown={(e) => {
+        startSize.current = 0; // Will be set by parent
+        handleMouseDown(e);
+      }}
+    >
+      <div className={cn(
+        'bg-studio-border/30 hover:bg-studio-cyan/30 transition-colors duration-150 rounded-full',
+        direction === 'horizontal' ? 'w-px h-16' : 'h-px w-16'
+      )} />
+    </div>
+  );
+}
 
 export interface PanelLayout {
   id: string;
@@ -104,6 +158,7 @@ PanelGroup.displayName = 'PanelGroup';
 export const Panel = forwardRef<HTMLDivElement, PanelProps>(
   ({ children, defaultSize = 200, minSize = 100, maxSize = '100%', collapsed = false, onCollapse, order = 0, className, style, ...props }, ref) => {
     const context = React.useContext(PanelGroupContext);
+    const direction = context?.direction || 'horizontal';
     const panelIdRef = useRef(`panel-${Math.random().toString(36).substr(2, 9)}`);
     const [isCollapsed, setIsCollapsed] = useState(collapsed);
     const [size, setSize] = useState(defaultSize);
@@ -137,6 +192,7 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>(
         >
           <div className="w-full h-full flex items-center justify-center bg-studio-panel-hover border border-studio-border">
             <ResizeHandle
+              direction={direction}
               className={cn('bg-studio-border/50 hover:bg-studio-cyan/50 transition-colors', direction === 'horizontal' ? 'w-1 h-full' : 'h-1 w-full')}
               onDrag={handleResize}
             />
@@ -164,6 +220,7 @@ export const Panel = forwardRef<HTMLDivElement, PanelProps>(
         {...props}
       >
         <ResizeHandle
+          direction={direction}
           className={cn('flex-shrink-0 z-10', direction === 'horizontal' ? 'w-1 h-full cursor-col-resize' : 'h-1 w-full cursor-row-resize')}
           onDrag={handleResize}
           hitAreaMargins={8}
@@ -189,6 +246,7 @@ export const PanelResizeHandle = forwardRef<HTMLDivElement, PanelResizeHandlePro
     return (
       <ResizeHandle
         ref={ref}
+        direction={direction}
         className={cn(
           'relative z-10 flex items-center justify-center select-none',
           direction === 'horizontal' ? 'w-1 cursor-col-resize' : 'h-1 cursor-row-resize',

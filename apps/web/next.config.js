@@ -15,6 +15,17 @@ const nextConfig = {
       test: /\.(gltf|glb|obj|stl|ply|fbx|dae|usdz|3mf)$/,
       type: 'asset/resource',
     });
+    // Add path aliases for webpack
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': require('path').resolve(__dirname, 'src'),
+      '@reina/core/types': require('path').resolve(__dirname, '../../packages/core/types'),
+      '@reina/core/math': require('path').resolve(__dirname, '../../packages/core/math'),
+      '@reina/core/schema': require('path').resolve(__dirname, '../../packages/core/schema'),
+      '@reina/ml': require('path').resolve(__dirname, '../../packages/ml-core'),
+      '@reina/physics': require('path').resolve(__dirname, '../../packages/physics-core'),
+      '@reina/shaders': require('path').resolve(__dirname, '../../packages/shaders'),
+    };
     if (!isServer) {
       config.resolve.fallback = { ...config.resolve.fallback, fs: false, path: false, crypto: false };
     }

@@ -25,136 +25,271 @@
   }
 
   * {
-    @apply border-studio-border;
+    border-color: var(--studio-border);
   }
 
   html {
-    @apply scroll-smooth;
+    scroll-behavior: smooth;
   }
 
   body {
-    @apply bg-studio-bg text-studio-text font-ui antialiased;
+    background-color: var(--studio-bg);
+    color: var(--studio-text);
+    font-family: var(--font-ui), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
   ::selection {
-    @apply bg-studio-cyan/30 text-studio-text-inverse;
+    background-color: rgba(0, 240, 255, 0.3);
+    color: var(--studio-text-inverse);
   }
 
   ::-webkit-scrollbar {
-    @apply w-2 h-2;
+    width: 8px;
+    height: 8px;
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-studio-bg;
+    background-color: var(--studio-bg);
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-studio-border rounded-full;
+    background-color: var(--studio-border);
+    border-radius: 9999px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-studio-text-muted;
+    background-color: var(--studio-text-muted);
   }
 
   ::-webkit-scrollbar-corner {
-    @apply bg-studio-bg;
+    background-color: var(--studio-bg);
   }
 }
 
 @layer components {
   .studio-panel {
-    @apply bg-studio-panel/80 backdrop-blur-studio border border-studio-border rounded-lg shadow-studio;
+    background-color: rgba(26, 29, 36, 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--studio-border);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.03);
   }
 
   .studio-panel-elevated {
-    @apply bg-studio-bg-elevated/90 backdrop-blur-studio-lg border border-studio-border rounded-lg shadow-studio-lg;
+    background-color: rgba(19, 20, 25, 0.9);
+    backdrop-filter: blur(40px);
+    border: 1px solid var(--studio-border);
+    border-radius: 0.5rem;
+    box-shadow: 0 8px 48px -8px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.03);
   }
 
   .studio-input {
-    @apply w-full bg-studio-bg-elevated border border-studio-border rounded-md px-3 py-2 text-studio-text placeholder-studio-text-muted
-           focus:outline-none focus:ring-2 focus:ring-studio-cyan/50 focus:border-studio-cyan
-           transition-all duration-150 ease-studio;
+    width: 100%;
+    background-color: var(--studio-bg-elevated);
+    border: 1px solid var(--studio-border);
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    color: var(--studio-text);
+    transition: all 150ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .studio-input::placeholder {
+    color: var(--studio-text-muted);
+  }
+
+  .studio-input:focus {
+    outline: none;
+    ring: 2px;
+    ring-color: rgba(0, 240, 255, 0.5);
+    border-color: var(--studio-cyan);
   }
 
   .studio-button {
-    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium text-sm
-           transition-all duration-150 ease-studio focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-studio-bg;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    transition: all 150ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .studio-button:focus {
+    outline: none;
+    ring: 2px;
+    ring-offset: 2px;
+    ring-offset-color: var(--studio-bg);
   }
 
   .studio-button-primary {
-    @apply studio-button bg-studio-cyan text-studio-text-inverse hover:bg-studio-cyan/90
-           focus:ring-studio-cyan active:scale-[0.98];
+    background-color: var(--studio-cyan);
+    color: var(--studio-text-inverse);
+  }
+
+  .studio-button-primary:hover {
+    background-color: rgba(0, 240, 255, 0.9);
+  }
+
+  .studio-button-primary:focus {
+    ring-color: var(--studio-cyan);
+  }
+
+  .studio-button-primary:active {
+    transform: scale(0.98);
   }
 
   .studio-button-secondary {
-    @apply studio-button bg-studio-magenta text-studio-text-inverse hover:bg-studio-magenta/90
-           focus:ring-studio-magenta active:scale-[0.98];
+    background-color: var(--studio-magenta);
+    color: var(--studio-text-inverse);
+  }
+
+  .studio-button-secondary:hover {
+    background-color: rgba(255, 0, 122, 0.9);
+  }
+
+  .studio-button-secondary:focus {
+    ring-color: var(--studio-magenta);
+  }
+
+  .studio-button-secondary:active {
+    transform: scale(0.98);
   }
 
   .studio-button-ghost {
-    @apply studio-button bg-transparent text-studio-text hover:bg-studio-panel-hover
-           focus:ring-studio-border active:scale-[0.98];
+    background-color: transparent;
+    color: var(--studio-text);
+  }
+
+  .studio-button-ghost:hover {
+    background-color: var(--studio-panel-hover);
+  }
+
+  .studio-button-ghost:focus {
+    ring-color: var(--studio-border);
+  }
+
+  .studio-button-ghost:active {
+    transform: scale(0.98);
   }
 
   .studio-button-danger {
-    @apply studio-button bg-studio-error/20 text-studio-error hover:bg-studio-error/30
-           focus:ring-studio-error active:scale-[0.98];
+    background-color: rgba(255, 51, 102, 0.2);
+    color: #FF3366;
+  }
+
+  .studio-button-danger:hover {
+    background-color: rgba(255, 51, 102, 0.3);
+  }
+
+  .studio-button-danger:focus {
+    ring-color: #FF3366;
+  }
+
+  .studio-button-danger:active {
+    transform: scale(0.98);
   }
 
   .studio-tab {
-    @apply px-3 py-1.5 text-sm font-medium rounded-md
-           text-studio-text-muted hover:text-studio-text hover:bg-studio-panel-hover
-           transition-colors duration-150 ease-studio;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 0.375rem;
+    color: var(--studio-text-muted);
+    transition: all 150ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .studio-tab:hover {
+    color: var(--studio-text);
+    background-color: var(--studio-panel-hover);
   }
 
   .studio-tab-active {
-    @apply studio-tab text-studio-cyan bg-studio-cyan/10 border-b-2 border-studio-cyan;
+    color: var(--studio-cyan);
+    background-color: rgba(0, 240, 255, 0.1);
+    border-bottom: 2px solid var(--studio-cyan);
   }
 
   .studio-dropdown {
-    @apply studio-panel-elevated min-w-[160px] py-1 shadow-studio-lg animate-slide-down;
+    background-color: rgba(19, 20, 25, 0.9);
+    backdrop-filter: blur(40px);
+    border: 1px solid var(--studio-border);
+    border-radius: 0.5rem;
+    box-shadow: 0 8px 48px -8px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.03);
+    min-width: 160px;
+    padding: 0.25rem;
+    animation: slideDown 0.3s ease-out;
   }
 
   .studio-dropdown-item {
-    @apply flex items-center gap-2 px-3 py-2 text-sm text-studio-text hover:bg-studio-panel-hover
-           transition-colors duration-100;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    color: var(--studio-text);
+    transition: all 100ms;
+  }
+
+  .studio-dropdown-item:hover {
+    background-color: var(--studio-panel-hover);
   }
 
   .studio-tooltip {
-    @apply studio-panel-elevated px-3 py-1.5 text-xs text-studio-text shadow-studio-lg;
+    background-color: rgba(19, 20, 25, 0.9);
+    backdrop-filter: blur(40px);
+    border: 1px solid var(--studio-border);
+    border-radius: 0.5rem;
+    box-shadow: 0 8px 48px -8px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.03);
+    padding: 0.375rem 0.75rem;
+    font-size: 0.75rem;
+    color: var(--studio-text);
   }
 
   .glassmorphism {
-    @apply bg-studio-panel/60 backdrop-blur-studio border border-studio-border/50;
+    background-color: rgba(26, 29, 36, 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(42, 46, 57, 0.5);
   }
 
   .glassmorphism-strong {
-    @apply bg-studio-panel/80 backdrop-blur-studio-lg border border-studio-border/30;
+    background-color: rgba(26, 29, 36, 0.8);
+    backdrop-filter: blur(40px);
+    border: 1px solid rgba(42, 46, 57, 0.3);
   }
 
   .neon-border {
-    @apply border border-studio-cyan/30 shadow-[0_0_10px_rgba(0,240,255,0.2)];
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
   }
 
   .neon-border-magenta {
-    @apply border border-studio-magenta/30 shadow-[0_0_10px_rgba(255,0,122,0.2)];
+    border: 1px solid rgba(255, 0, 122, 0.3);
+    box-shadow: 0 0 10px rgba(255, 0, 122, 0.2);
   }
 
   .neon-text-cyan {
-    @apply text-studio-cyan drop-shadow-[0_0_8px_rgba(0,240,255,0.5)];
+    color: var(--studio-cyan);
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
   }
 
   .neon-text-magenta {
-    @apply text-studio-magenta drop-shadow-[0_0_8px_rgba(255,0,122,0.5)];
+    color: var(--studio-magenta);
+    text-shadow: 0 0 8px rgba(255, 0, 122, 0.5);
   }
 
   .grid-bg {
-    @apply bg-[url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0z' fill='none' stroke='%2300F0FF' stroke-width='0.5' stroke-opacity='0.03'/%3E%3C/svg%3E")] bg-grid;
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0z' fill='none' stroke='%2300F0FF' stroke-width='0.5' stroke-opacity='0.03'/%3E%3C/svg%3E");
+    background-size: 40px 40px;
   }
 
   .grid-bg-accent {
-    @apply bg-[url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0z' fill='none' stroke='%23FF007A' stroke-width='0.5' stroke-opacity='0.03'/%3E%3C/svg%3E")] bg-grid;
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0z' fill='none' stroke='%23FF007A' stroke-width='0.5' stroke-opacity='0.03'/%3E%3C/svg%3E");
+    background-size: 40px 40px;
   }
 }
 
@@ -177,5 +312,20 @@
 
   .backface-hidden {
     backface-visibility: hidden;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 }

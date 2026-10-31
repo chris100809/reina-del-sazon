@@ -5,16 +5,12 @@ export function vec3(x = 0, y = 0, z = 0): Vec3 {
 }
 
 export function set(v: Vec3, x: number, y: number, z: number): Vec3 {
-  v.x = x;
-  v.y = y;
-  v.z = z;
+  v.x = x; v.y = y; v.z = z;
   return v;
 }
 
 export function copy(out: Vec3, v: Vec3): Vec3 {
-  out.x = v.x;
-  out.y = v.y;
-  out.z = v.z;
+  out.x = v.x; out.y = v.y; out.z = v.z;
   return out;
 }
 
@@ -23,51 +19,37 @@ export function clone(v: Vec3): Vec3 {
 }
 
 export function add(out: Vec3, a: Vec3, b: Vec3): Vec3 {
-  out.x = a.x + b.x;
-  out.y = a.y + b.y;
-  out.z = a.z + b.z;
+  out.x = a.x + b.x; out.y = a.y + b.y; out.z = a.z + b.z;
   return out;
 }
 
 export function sub(out: Vec3, a: Vec3, b: Vec3): Vec3 {
-  out.x = a.x - b.x;
-  out.y = a.y - b.y;
-  out.z = a.z - b.z;
+  out.x = a.x - b.x; out.y = a.y - b.y; out.z = a.z - b.z;
   return out;
 }
 
 export function mul(out: Vec3, a: Vec3, b: Vec3): Vec3 {
-  out.x = a.x * b.x;
-  out.y = a.y * b.y;
-  out.z = a.z * b.z;
+  out.x = a.x * b.x; out.y = a.y * b.y; out.z = a.z * b.z;
   return out;
 }
 
 export function div(out: Vec3, a: Vec3, b: Vec3): Vec3 {
-  out.x = a.x / b.x;
-  out.y = a.y / b.y;
-  out.z = a.z / b.z;
+  out.x = a.x / b.x; out.y = a.y / b.y; out.z = a.z / b.z;
   return out;
 }
 
 export function scale(out: Vec3, v: Vec3, s: number): Vec3 {
-  out.x = v.x * s;
-  out.y = v.y * s;
-  out.z = v.z * s;
+  out.x = v.x * s; out.y = v.y * s; out.z = v.z * s;
   return out;
 }
 
 export function scaleAndAdd(out: Vec3, a: Vec3, b: Vec3, s: number): Vec3 {
-  out.x = a.x + b.x * s;
-  out.y = a.y + b.y * s;
-  out.z = a.z + b.z * s;
+  out.x = a.x + b.x * s; out.y = a.y + b.y * s; out.z = a.z + b.z * s;
   return out;
 }
 
 export function negate(out: Vec3, v: Vec3): Vec3 {
-  out.x = -v.x;
-  out.y = -v.y;
-  out.z = -v.z;
+  out.x = -v.x; out.y = -v.y; out.z = -v.z;
   return out;
 }
 
@@ -95,9 +77,7 @@ export function lenSq(v: Vec3): number {
 export function normalize(out: Vec3, v: Vec3): Vec3 {
   const l = len(v);
   if (l > 0) {
-    out.x = v.x / l;
-    out.y = v.y / l;
-    out.z = v.z / l;
+    out.x = v.x / l; out.y = v.y / l; out.z = v.z / l;
   }
   return out;
 }
@@ -107,9 +87,7 @@ export function distance(a: Vec3, b: Vec3): number {
 }
 
 export function distanceSq(a: Vec3, b: Vec3): number {
-  const dx = a.x - b.x;
-  const dy = a.y - b.y;
-  const dz = a.z - b.z;
+  const dx = a.x - b.x; const dy = a.y - b.y; const dz = a.z - b.z;
   return dx * dx + dy * dy + dz * dz;
 }
 
@@ -121,16 +99,12 @@ export function lerp(out: Vec3, a: Vec3, b: Vec3, t: number): Vec3 {
 }
 
 export function min(out: Vec3, a: Vec3, b: Vec3): Vec3 {
-  out.x = Math.min(a.x, b.x);
-  out.y = Math.min(a.y, b.y);
-  out.z = Math.min(a.z, b.z);
+  out.x = Math.min(a.x, b.x); out.y = Math.min(a.y, b.y); out.z = Math.min(a.z, b.z);
   return out;
 }
 
 export function max(out: Vec3, a: Vec3, b: Vec3): Vec3 {
-  out.x = Math.max(a.x, b.x);
-  out.y = Math.max(a.y, b.y);
-  out.z = Math.max(a.z, b.z);
+  out.x = Math.max(a.x, b.x); out.y = Math.max(a.y, b.y); out.z = Math.max(a.z, b.z);
   return out;
 }
 
@@ -142,37 +116,27 @@ export function clamp(out: Vec3, v: Vec3, min: Vec3, max: Vec3): Vec3 {
 }
 
 export function floor(out: Vec3, v: Vec3): Vec3 {
-  out.x = Math.floor(v.x);
-  out.y = Math.floor(v.y);
-  out.z = Math.floor(v.z);
+  out.x = Math.floor(v.x); out.y = Math.floor(v.y); out.z = Math.floor(v.z);
   return out;
 }
 
 export function ceil(out: Vec3, v: Vec3): Vec3 {
-  out.x = Math.ceil(v.x);
-  out.y = Math.ceil(v.y);
-  out.z = Math.ceil(v.z);
+  out.x = Math.ceil(v.x); out.y = Math.ceil(v.y); out.z = Math.ceil(v.z);
   return out;
 }
 
 export function round(out: Vec3, v: Vec3): Vec3 {
-  out.x = Math.round(v.x);
-  out.y = Math.round(v.y);
-  out.z = Math.round(v.z);
+  out.x = Math.round(v.x); out.y = Math.round(v.y); out.z = Math.round(v.z);
   return out;
 }
 
 export function abs(out: Vec3, v: Vec3): Vec3 {
-  out.x = Math.abs(v.x);
-  out.y = Math.abs(v.y);
-  out.z = Math.abs(v.z);
+  out.x = Math.abs(v.x); out.y = Math.abs(v.y); out.z = Math.abs(v.z);
   return out;
 }
 
 export function sign(out: Vec3, v: Vec3): Vec3 {
-  out.x = Math.sign(v.x);
-  out.y = Math.sign(v.y);
-  out.z = Math.sign(v.z);
+  out.x = Math.sign(v.x); out.y = Math.sign(v.y); out.z = Math.sign(v.z);
   return out;
 }
 
@@ -208,7 +172,7 @@ export function reflect(out: Vec3, incident: Vec3, normal: Vec3): Vec3 {
 }
 
 export function refract(out: Vec3, incident: Vec3, normal: Vec3, eta: number): Vec3 {
-  const cosi = Math.max(-1, Math.min(1, dot(incident, normal)));
+  let cosi = Math.max(-1, Math.min(1, dot(incident, normal)));
   let n = normal;
   if (cosi < 0) {
     cosi = -cosi;
@@ -315,16 +279,12 @@ export function exactEquals(a: Vec3, b: Vec3): boolean {
 }
 
 export function fromArray(out: Vec3, arr: ArrayLike<number>, offset = 0): Vec3 {
-  out.x = arr[offset];
-  out.y = arr[offset + 1];
-  out.z = arr[offset + 2];
+  out.x = arr[offset]; out.y = arr[offset + 1]; out.z = arr[offset + 2];
   return out;
 }
 
 export function toArray(v: Vec3, out: number[] = [], offset = 0): number[] {
-  out[offset] = v.x;
-  out[offset + 1] = v.y;
-  out[offset + 2] = v.z;
+  out[offset] = v.x; out[offset + 1] = v.y; out[offset + 2] = v.z;
   return out;
 }
 

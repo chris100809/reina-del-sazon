@@ -1,6 +1,5 @@
 import type { Sphere, Vec3, Box3 } from '../types';
 import { vec3, copy as vcopy, set as vset, len as vlen, distance as vdistance } from './vec3';
-import { box3, makeEmpty, expandByPoint, getCenter, getSize } from './box3';
 
 export function sphere(center?: Vec3, radius = 0): Sphere {
   return { center: center ? vcopy(vec3(), center) : vset(vec3(), 0, 0, 0), radius };
@@ -22,7 +21,7 @@ export function clone(s: Sphere): Sphere {
   return { center: vcopy(vec3(), s.center), radius: s.radius };
 }
 
-export function makeEmpty(out: Sphere): Sphere {
+export function makeEmptySphere(out: Sphere): Sphere {
   vset(out.center, 0, 0, 0);
   out.radius = -1;
   return out;
@@ -71,14 +70,14 @@ export function clampPoint(out: Vec3, s: Sphere, v: Vec3): Vec3 {
 }
 
 export function getBoundingBox(out: Box3, s: Sphere): Box3 {
-  if (isEmpty(s)) return makeEmpty(out);
+  if (isEmpty(s)) return makeEmptyBox(out);
   vset(out.min, s.center.x - s.radius, s.center.y - s.radius, s.center.z - s.radius);
   vset(out.max, s.center.x + s.radius, s.center.y + s.radius, s.center.z + s.radius);
   return out;
 }
 
 export function applyMat4(out: Sphere, s: Sphere, m: Float32Array): Sphere {
-  if (isEmpty(s)) return makeEmpty(out);
+  if (isEmpty(s)) return makeEmptySphere(out);
   const e = m;
   const x = e[0] * s.center.x + e[4] * s.center.y + e[8] * s.center.z + e[12];
   const y = e[1] * s.center.x + e[5] * s.center.y + e[9] * s.center.z + e[13];
@@ -91,7 +90,7 @@ export function applyMat4(out: Sphere, s: Sphere, m: Float32Array): Sphere {
   return out;
 }
 
-export function translate(out: Sphere, s: Sphere, offset: Vec3): Sphere {
+export function translateSphere(out: Sphere, s: Sphere, offset: Vec3): Sphere {
   vcopy(out.center, s.center);
   out.center.x += offset.x;
   out.center.y += offset.y;
@@ -100,7 +99,7 @@ export function translate(out: Sphere, s: Sphere, offset: Vec3): Sphere {
   return out;
 }
 
-export function expandByPoint(out: Sphere, s: Sphere, v: Vec3): Sphere {
+export function expandByPointSphere(out: Sphere, s: Sphere, v: Vec3): Sphere {
   if (isEmpty(s)) {
     vcopy(out.center, v);
     out.radius = 0;
@@ -117,7 +116,7 @@ export function expandByPoint(out: Sphere, s: Sphere, v: Vec3): Sphere {
   return out;
 }
 
-export function union(out: Sphere, s1: Sphere, s2: Sphere): Sphere {
+export function unionSphere(out: Sphere, s1: Sphere, s2: Sphere): Sphere {
   if (isEmpty(s1)) return copy(out, s2);
   if (isEmpty(s2)) return copy(out, s1);
   const centerDist = vdistance(s1.center, s2.center);
@@ -148,16 +147,31 @@ export function equals(a: Sphere, b: Sphere): boolean {
 }
 
 export function fromPoints(out: Sphere, points: Float32Array, stride = 3): Sphere {
-  const box = box3();
-  makeEmpty(box);
+  let minX = Infinity, minY = Infinity, minZ = Infinity;
+  let maxX = -Infinity, maxY = -Infinity, maxZ = -Infinity;
   for (let i = 0, l = points.length; i < l; i += stride) {
-    expandByPoint(box, box, { x: points[i], y: points[i + 1], z: points[i + 2] });
+    const x = points[i], y = points[i + 1], z = points[i + 2];
+    if (x < minX) minX = x;
+    if (y < minY) minY = y;
+    if (z < minZ) minZ = z;
+    if (x > maxX) maxX = x;
+    if (y > maxY) maxY = y;
+    if (z > maxZ) maxZ = z;
   }
-  getCenter(out.center, box);
-  out.radius = getSize(vec3(), box).x * 0.5;
+  const centerX = (minX + maxX) * 0.5;
+  const centerY = (minY + maxY) * 0.5;
+  const centerZ = (minZ + maxZ) * 0.5;
+  vset(out.center, centerX, centerY, centerZ);
+  out.radius = Math.max(maxX - centerX, maxY - centerY, maxZ - centerZ);
   return out;
 }
 
 export function str(s: Sphere): string {
   return `sphere(center: ${s.center.x.toFixed(4)}, ${s.center.y.toFixed(4)}, ${s.center.z.toFixed(4)}; radius: ${s.radius.toFixed(4)})`;
+}
+
+function makeEmptyBox(out: Box3): Box3 {
+  vset(out.min, Infinity, Infinity, Infinity);
+  vset(out.max, -Infinity, -Infinity, -Infinity);
+  return out;
 }

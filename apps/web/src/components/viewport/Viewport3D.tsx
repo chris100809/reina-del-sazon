@@ -33,8 +33,6 @@ import { useStudioStore } from '@/hooks/useStudioStore';
 import { useViewportStore } from '@/hooks/useViewportStore';
 import { GizmoHelper } from './GizmoHelper';
 import { ViewportOverlays } from './ViewportOverlays';
-import { ViewportShadingMenu } from './ViewportShadingMenu';
-import { CameraControls } from './CameraControls';
 
 extend({
   CSS2DRenderer,
