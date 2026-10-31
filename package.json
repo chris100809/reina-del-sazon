@@ -1,20 +1,40 @@
 {
-  "name": "dropship-video-engine",
-  "version": "0.1.0",
-  "description": "Motor local de producción de video para dropshipping (pipeline asíncrono con cola y reintentos).",
-  "type": "module",
+  "name": "reina-del-sazon",
+  "version": "1.0.0",
+  "description": "Enterprise-grade 2D→3D Reconstruction Studio with Blender-style UI, Physics, and AI Enhancement",
   "private": true,
-  "engines": {
-    "node": ">=20"
-  },
-  "bin": {
-    "engine": "bin/engine.js"
-  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "test": "node --test tests/*.test.js",
-    "engine": "node bin/engine.js"
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "build:web": "turbo run build --filter=@reina/web",
+    "build:desktop": "turbo run build --filter=@reina/desktop",
+    "build:ml": "turbo run build --filter=@reina/ml-core",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "docker:build": "docker compose -f docker/docker-compose.yml build",
+    "docker:up": "docker compose -f docker/docker-compose.yml up -d",
+    "github:sync": "python scripts/github_sync.py",
+    "setup": "python scripts/setup_repo.py"
   },
-  "dependencies": {
-    "sharp": "^0.35.4"
-  }
+  "devDependencies": {
+    "turbo": "^2.0.0",
+    "typescript": "^5.5.0",
+    "@types/node": "^22.0.0",
+    "eslint": "^9.0.0",
+    "prettier": "^3.3.0",
+    "vitest": "^2.0.0",
+    "@vitest/ui": "^2.0.0",
+    "playwright": "^1.45.0",
+    "@chromatic/storybook": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@9.6.0"
 }

@@ -1,6 +1,83 @@
+# Dependencies
 node_modules/
-workspace/
-logs/
-data/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+target/
+*.wasm
+
+# Environment
 .env
+.env.local
+.env.production.local
+.env.development.local
+.env.test.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
 *.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+
+# Turbo
+.turbo/
+
+# TypeScript
+*.tsbuildinfo
+
+# Tauri
+apps/desktop/src-tauri/target/
+apps/desktop/src-tauri/gen/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# ML Models
+packages/ml-core/**/*.pth
+packages/ml-core/**/*.onnx
+packages/ml-core/**/*.pt
+packages/ml-core/**/*.bin
+packages/ml-core/**/*.safetensors
+
+# Docker
+.docker/
+
+# Misc
+*.tgz
+.cache/
+.temp/
+tmp/
