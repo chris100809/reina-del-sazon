@@ -1,0 +1,185 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  darkMode: 'class',
+  content: [
+    './apps/web/src/**/*.{js,ts,jsx,tsx,mdx}',
+    './apps/desktop/src/**/*.{js,ts,jsx,tsx,mdx}',
+    './packages/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        // Studio Dark Theme - Blender/UE5/Figma inspired
+        studio: {
+          bg: '#0D0E12',
+          bgElevated: '#131419',
+          panel: '#1A1D24',
+          panelHover: '#1E222A',
+          border: '#2A2E39',
+          borderActive: '#00F0FF',
+          borderAccent: '#FF007A',
+          text: '#E8EAF0',
+          textMuted: '#6B7280',
+          textInverse: '#0D0E12',
+          // Neon accents
+          cyan: '#00F0FF',
+          cyanGlow: '#00F0FF40',
+          magenta: '#FF007A',
+          magentaGlow: '#FF007A40',
+          amber: '#FFB800',
+          amberGlow: '#FFB80040',
+          emerald: '#00FF88',
+          emeraldGlow: '#00FF8840',
+          // Status
+          success: '#00FF88',
+          warning: '#FFB800',
+          error: '#FF3366',
+          info: '#00F0FF',
+        },
+        // Semantic aliases
+        background: 'var(--studio-bg)',
+        foreground: 'var(--studio-text)',
+        primary: {
+          DEFAULT: 'var(--studio-cyan)',
+          foreground: 'var(--studio-textInverse)',
+        },
+        secondary: {
+          DEFAULT: 'var(--studio-magenta)',
+          foreground: 'var(--studio-textInverse)',
+        },
+        accent: {
+          DEFAULT: 'var(--studio-amber)',
+          foreground: 'var(--studio-textInverse)',
+        },
+        muted: {
+          DEFAULT: 'var(--studio-panel)',
+          foreground: 'var(--studio-textMuted)',
+        },
+        border: 'var(--studio-border)',
+        ring: 'var(--studio-cyan)',
+      },
+      fontFamily: {
+        sans: ['JetBrains Mono', 'Fira Code', 'SF Mono', 'Monospace'],
+        mono: ['JetBrains Mono', 'Fira Code', 'SF Mono', 'Monospace'],
+        ui: ['Inter', 'SF Pro', 'system-ui', 'sans-serif'],
+      },
+      fontSize: {
+        'xs': ['0.7rem', { lineHeight: '1.4', letterSpacing: '0.02em' }],
+        'sm': ['0.8rem', { lineHeight: '1.5', letterSpacing: '0.01em' }],
+        'base': ['0.875rem', { lineHeight: '1.6', letterSpacing: '0' }],
+        'lg': ['1rem', { lineHeight: '1.6', letterSpacing: '-0.01em' }],
+        'xl': ['1.125rem', { lineHeight: '1.5', letterSpacing: '-0.02em' }],
+        '2xl': ['1.25rem', { lineHeight: '1.4', letterSpacing: '-0.02em' }],
+        '3xl': ['1.5rem', { lineHeight: '1.3', letterSpacing: '-0.03em' }],
+      },
+      spacing: {
+        '0': '0',
+        '1': '0.25rem',
+        '2': '0.5rem',
+        '3': '0.75rem',
+        '4': '1rem',
+        '5': '1.25rem',
+        '6': '1.5rem',
+        '8': '2rem',
+        '10': '2.5rem',
+        '12': '3rem',
+        '16': '4rem',
+      },
+      borderRadius: {
+        'none': '0',
+        'sm': '2px',
+        'DEFAULT': '4px',
+        'md': '6px',
+        'lg': '8px',
+        'xl': '12px',
+        'full': '9999px',
+      },
+      boxShadow: {
+        'studio': '0 4px 24px -4px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.03)',
+        'studio-lg': '0 8px 48px -8px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.03)',
+        'glow-cyan': '0 0 20px rgba(0, 240, 255, 0.3), 0 0 40px rgba(0, 240, 255, 0.1)',
+        'glow-magenta': '0 0 20px rgba(255, 0, 122, 0.3), 0 0 40px rgba(255, 0, 122, 0.1)',
+        'glow-amber': '0 0 20px rgba(255, 184, 0, 0.3), 0 0 40px rgba(255, 184, 0, 0.1)',
+        'inner': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.3)',
+      },
+      backdropBlur: {
+        'studio': '20px',
+        'studio-lg': '40px',
+      },
+      backgroundImage: {
+        'grid-pattern': 'linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px)',
+        'grid-pattern-accent': 'linear-gradient(rgba(255, 0, 122, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 0, 122, 0.03) 1px, transparent 1px)',
+        'radial-glow': 'radial-gradient(ellipse at center, rgba(0, 240, 255, 0.15) 0%, transparent 70%)',
+      },
+      backgroundSize: {
+        'grid': '40px 40px',
+        'grid-sm': '20px 20px',
+      },
+      animation: {
+        'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+        'spin-slow': 'spin 3s linear infinite',
+        'slide-up': 'slideUp 0.3s ease-out',
+        'slide-down': 'slideDown 0.3s ease-out',
+        'fade-in': 'fadeIn 0.2s ease-out',
+        'scale-in': 'scaleIn 0.2s ease-out',
+        'shimmer': 'shimmer 2s linear infinite',
+      },
+      keyframes: {
+        pulseGlow: {
+          '0%, 100%': { opacity: '0.5', transform: 'scale(1)' },
+          '50%': { opacity: '1', transform: 'scale(1.02)' },
+        },
+        slideUp: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideDown: {
+          '0%': { opacity: '0', transform: 'translateY(-10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        scaleIn: {
+          '0%': { opacity: '0', transform: 'scale(0.95)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
+      },
+      transitionDuration: {
+        '0': '0ms',
+        '75': '75ms',
+        '150': '150ms',
+        '200': '200ms',
+        '300': '300ms',
+        '500': '500ms',
+        '700': '700ms',
+        '1000': '1000ms',
+      },
+      transitionTimingFunction: {
+        'studio': 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+        'studio-sharp': 'cubic-bezier(0.4, 0, 0.2, 1)',
+        'bounce': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+      },
+      zIndex: {
+        'base': '0',
+        'dropdown': '100',
+        'sticky': '200',
+        'overlay': '300',
+        'modal': '400',
+        'popover': '500',
+        'tooltip': '600',
+        'toast': '700',
+        'gizmo': '1000',
+      },
+    },
+  },
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+  ],
+}

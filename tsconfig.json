@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "preserve",
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@reina/*": ["packages/*/src"],
+      "@reina/web/*": ["apps/web/src/*"],
+      "@reina/desktop/*": ["apps/desktop/src/*"],
+      "@reina/core/*": ["packages/core/*"],
+      "@reina/ml/*": ["packages/ml-core/*"],
+      "@reina/physics/*": ["packages/physics-core/*"],
+      "@reina/shaders/*": ["packages/shaders/*"]
+    },
+    "types": ["node", "vitest/globals", "@types/react", "@types/react-dom", "webgpu-types"]
+  },
+  "exclude": ["node_modules", "dist", "build", ".next", "target"],
+  "references": [
+    { "path": "./packages/core/types" },
+    { "path": "./packages/core/math" },
+    { "path": "./packages/core/schema" },
+    { "path": "./packages/ml-core" },
+    { "path": "./packages/physics-core" },
+    { "path": "./packages/shaders" },
+    { "path": "./apps/web" },
+    { "path": "./apps/desktop" }
+  ]
+}
